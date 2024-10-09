@@ -18,7 +18,6 @@ public class StripeService : IStripeService
 	
 	public StripeService(
 		SubscriptionService subscriptionService,
-		SubscriptionScheduleService subscriptionScheduleService,
 		InvoiceService invoiceService,
 		ChargeService chargeService,
 		PaymentIntentService paymentIntentService,
@@ -63,7 +62,8 @@ public class StripeService : IStripeService
 		var subscription = await GetSubscriptionAsync(subscriptionId);
 		var latestItem = subscription.Items.OrderByDescending(x => x.Created).FirstOrDefault();
 
-		foreach (var item in subscription.Items.Where(item => item.Id != latestItem.Id))
+		var subscriptionItems = subscription.Items.Where(item => item.Id != latestItem?.Id);
+		foreach (var item in subscriptionItems)
 		{
 			await DeleteSubscriptionItemAsync(item.Id);
 		}
@@ -150,7 +150,7 @@ public class StripeService : IStripeService
 	{
 		var options = new PaymentIntentGetOptions
 		{
-			Expand = new List<string> { "payment_method" }
+			Expand = ["payment_method"]
 		};
 		return await _paymentIntentService.GetAsync(paymentIntentId, options);
 	}
@@ -212,7 +212,7 @@ public class StripeService : IStripeService
 	{
 		var options = new CustomerGetOptions
 		{
-			Expand = new List<string> { "sources" }
+			Expand = ["sources"]
 		};
 		return await _customerService.GetAsync(customerId, options);
 	}

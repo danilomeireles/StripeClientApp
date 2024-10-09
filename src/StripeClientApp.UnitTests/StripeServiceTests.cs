@@ -17,7 +17,6 @@ public class StripeServiceTests
             
         _stripeService = new StripeService(
             _subscriptionServiceMock.Object,
-            new Mock<SubscriptionScheduleService>().Object,
             new Mock<InvoiceService>().Object,
             new Mock<ChargeService>().Object,
             new Mock<PaymentIntentService>().Object,
