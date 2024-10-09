@@ -8,7 +8,9 @@ public class StripeService : IStripeService
 	private const string StripeApiKey = "stripe-api-key";
 	
 	private readonly SubscriptionService _subscriptionService;
+	private readonly SubscriptionItemService _subscriptionItemService;
 	private readonly InvoiceService _invoiceService;
+	private readonly InvoiceItemService _invoiceItemService;
 	private readonly ChargeService _chargeService;
 	private readonly PaymentIntentService _paymentIntentService;
 	private readonly RefundService _refundService;
@@ -18,7 +20,9 @@ public class StripeService : IStripeService
 	
 	public StripeService(
 		SubscriptionService subscriptionService,
+		SubscriptionItemService subscriptionItemService,
 		InvoiceService invoiceService,
+		InvoiceItemService invoiceItemService,
 		ChargeService chargeService,
 		PaymentIntentService paymentIntentService,
 		RefundService refundService,
@@ -29,7 +33,9 @@ public class StripeService : IStripeService
 		StripeConfiguration.ApiKey = StripeApiKey;
 		
 		_subscriptionService = subscriptionService;
+		_subscriptionItemService = subscriptionItemService;
 		_invoiceService = invoiceService;
+		_invoiceItemService = invoiceItemService;
 		_chargeService = chargeService;
 		_paymentIntentService = paymentIntentService;
 		_refundService = refundService;
@@ -100,14 +106,12 @@ public class StripeService : IStripeService
 
 	public async Task<SubscriptionItem> CreateSubscriptionItemAsync(SubscriptionItemCreateOptions options)
 	{
-		var service = new SubscriptionItemService();
-		return await service.CreateAsync(options);
+		return await _subscriptionItemService.CreateAsync(options);
 	}
 
 	public async Task DeleteSubscriptionItemAsync(string itemId)
 	{
-		var service = new SubscriptionItemService();
-		await service.DeleteAsync(itemId);
+		await _subscriptionItemService.DeleteAsync(itemId);
 	}
 	
 	public async Task<Invoice> GetInvoiceAsync(string invoiceId)
@@ -142,8 +146,7 @@ public class StripeService : IStripeService
 
 	private async Task DeleteInvoiceLineItemAsync(string itemId)
 	{
-		var service = new InvoiceItemService();
-		await service.DeleteAsync(itemId);
+		await _invoiceItemService.DeleteAsync(itemId);
 	}
 	
 	public async Task<PaymentIntent> GetPaymentIntentAsync(string paymentIntentId)
