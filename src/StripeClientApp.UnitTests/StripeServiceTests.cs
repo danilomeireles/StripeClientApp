@@ -48,4 +48,23 @@ public class StripeServiceTests
         result.Data.Should().HaveCount(1);
         result.Data[0].Id.Should().Be("sub_123");
     }
+    
+    [Fact]
+    public async Task GetSubscriptionAsync_ShouldReturnSubscription_WhenCalledWithValidId()
+    {
+        // Arrange
+        var subscriptionId = "sub_123";
+        var subscription = new Subscription { Id = subscriptionId };
+
+        _subscriptionServiceMock
+            .Setup(x => x.GetAsync(subscriptionId, It.IsAny<SubscriptionGetOptions>(), It.IsAny<RequestOptions>(), default))
+            .ReturnsAsync(subscription);
+
+        // Act
+        var result = await _stripeService.GetSubscriptionAsync(subscriptionId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Id.Should().Be(subscriptionId);
+    }
 }

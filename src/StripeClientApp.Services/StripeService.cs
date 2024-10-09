@@ -1,4 +1,4 @@
-﻿﻿using Stripe;
+﻿using Stripe;
 using Stripe.Terminal;
 
 namespace StripeClientApp.Services;
