@@ -142,11 +142,40 @@ public class StripeServiceTests
         // Assert
         result.Should().NotBeNull();
         result.Id.Should().Be(subscriptionId);
-
-        // Verify that DeleteSubscriptionItemAsync was called
+        
         subscriptionItemServiceMock.Verify(x => x.DeleteAsync("item_1", It.IsAny<SubscriptionItemDeleteOptions>(), It.IsAny<RequestOptions>(), default), Times.Once);
-
-        // Verify that DeleteInvoiceLineItemAsync was called
         invoiceItemServiceMock.Verify(x => x.DeleteAsync("line_1", It.IsAny<InvoiceItemDeleteOptions>(), It.IsAny<RequestOptions>(), default), Times.Once);
+    }
+    
+    [Fact]
+    public async Task CancelSubscriptionAsync_ShouldCancelSubscription_WhenCalledWithValidId()
+    {
+        // Arrange
+        var subscriptionId = "sub_123";
+        var canceledSubscription = new Subscription
+        {
+            Id = subscriptionId,
+            Status = "canceled"
+        };
+
+        var cancelOptions = new SubscriptionCancelOptions
+        {
+            Prorate = false,
+            InvoiceNow = false
+        };
+        
+        _subscriptionServiceMock
+            .Setup(x => x.CancelAsync(subscriptionId, It.IsAny<SubscriptionCancelOptions>(), null, default))
+            .ReturnsAsync(canceledSubscription);
+
+        // Act
+        var result = await _stripeService.CancelSubscriptionAsync(subscriptionId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Id.Should().Be(subscriptionId);
+        result.Status.Should().Be("canceled");
+        
+        _subscriptionServiceMock.Verify(x => x.CancelAsync(subscriptionId, It.IsAny<SubscriptionCancelOptions>(), null, default), Times.Once);
     }
 }
