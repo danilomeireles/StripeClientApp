@@ -1,8 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StripeClientApp.Services", "StripeClientApp.Services\StripeClientApp.Services.csproj", "{9B99C913-C394-4239-8672-B0B62B000C7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B99C913-C394-4239-8672-B0B62B000C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B99C913-C394-4239-8672-B0B62B000C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B99C913-C394-4239-8672-B0B62B000C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B99C913-C394-4239-8672-B0B62B000C7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
